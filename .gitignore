@@ -1,0 +1,7 @@
+# Copyright (c) J.Dreyer
+# SPDX-License-Identifier: Apache-2.0
+
+# Set your private global .gitignore:
+# https://digitalfortress.tech/tricks/creating-a-global-gitignore/
+
+build
