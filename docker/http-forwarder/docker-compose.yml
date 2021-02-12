@@ -1,0 +1,30 @@
+# Copyright (c) J.Dreyer
+# SPDX-License-Identifier: Apache-2.0
+
+# This docker-compose file contains optional HTTP Forwarder services. Since it's optional, this file is
+# dependent of docker-compose file from <project_root>/docker. In order to run this services, execute command:
+# docker-compose -f docker/docker-compose.yml -f docker/addons/bootstrap/docker-compose.yml up
+# from project root.
+
+version: "3.7"
+
+networks:
+  docker_mainflux-base-net:
+    external: true
+
+services:
+  http-forwarder:
+    image: jonathandreyer/mainflux-http-forwarder:latest
+    container_name: mainflux-http-forwarder
+    restart: on-failure
+    environment:
+      MF_NATS_URL: ${MF_NATS_URL}
+      MF_HTTP_FORWARDER_LOG_LEVEL: ${MF_HTTP_FORWARDER_LOG_LEVEL}
+      MF_HTTP_FORWARDER_PORT: ${MF_HTTP_FORWARDER_PORT}
+      MF_HTTP_FORWARDER_URL: ${MF_HTTP_FORWARDER_URL}
+    ports:
+      - ${MF_HTTP_FORWARDER_PORT}:${MF_HTTP_FORWARDER_PORT}
+    networks:
+      - docker_mainflux-base-net
+    volumes:
+      - ./subjects.toml:/config/subjects.toml
