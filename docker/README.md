@@ -11,4 +11,4 @@ Follow the [official documentation](https://docs.docker.com/compose/install/).
 
 ## Usage
 
-Use the folder *addons* in Mainflux Docker Composition.
+Use the folder *http-forwarder* with the Mainflux Docker Composition.
