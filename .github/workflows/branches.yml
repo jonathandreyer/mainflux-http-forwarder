@@ -1,0 +1,21 @@
+name: Test, Build & Push CI on others branches
+
+on:
+  push:
+    branches-ignore: master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Run test
+        run: make test
+
+      - name: Build in Go
+        run: make
+
+      - name: Build image (latest)
+        run: make docker
