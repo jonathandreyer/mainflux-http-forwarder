@@ -28,14 +28,16 @@ const (
 	defNatsURL         = "nats://localhost:4222"
 	defLogLevel        = "error"
 	defPort            = "8990"
-	defURL             = "http://localhost:9000"
+	defRemoteUrl       = "http://localhost:9000"
+	defRemoteToken     = ""
 	defSubjectsCfgPath = "/config/subjects.toml"
 	defContentType     = "application/senml+json"
 
 	envNatsURL         = "MF_NATS_URL"
 	envLogLevel        = "MF_HTTP_FORWARDER_LOG_LEVEL"
 	envPort            = "MF_HTTP_FORWARDER_PORT"
-	envURL             = "MF_HTTP_FORWARDER_URL"
+	envRemoteUrl       = "MF_HTTP_FORWARDER_REMOTE_URL"
+	envRemoteToken     = "MF_HTTP_FORWARDER_REMOTE_TOKEN"
 	envSubjectsCfgPath = "MF_HTTP_FORWARDER_SUBJECTS_CONFIG"
 	envContentType     = "MF_HTTP_FORWARDER_CONTENT_TYPE"
 )
@@ -44,7 +46,8 @@ type config struct {
 	natsURL         string
 	logLevel        string
 	port            string
-	url             string
+	remoteUrl       string
+	remoteToken     string
 	subjectsCfgPath string
 	contentType     string
 }
@@ -64,7 +67,7 @@ func main() {
 	}
 	defer pubSub.Close()
 
-	repo := http_forwarder.New(cfg.url)
+	repo := http_forwarder.New(cfg.remoteUrl, cfg.remoteToken)
 
 	counter, latency := makeMetrics()
 	repo = api.LoggingMiddleware(repo, logger)
@@ -93,7 +96,8 @@ func loadConfigs() config {
 		natsURL:         mainflux.Env(envNatsURL, defNatsURL),
 		logLevel:        mainflux.Env(envLogLevel, defLogLevel),
 		port:            mainflux.Env(envPort, defPort),
-		url:             mainflux.Env(envURL, defURL),
+		remoteUrl:       mainflux.Env(envRemoteUrl, defRemoteUrl),
+		remoteToken:     mainflux.Env(envRemoteToken, defRemoteToken),
 		subjectsCfgPath: mainflux.Env(envSubjectsCfgPath, defSubjectsCfgPath),
 		contentType:     mainflux.Env(envContentType, defContentType),
 	}

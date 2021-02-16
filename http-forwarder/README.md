@@ -13,7 +13,8 @@ default values.
 | MF_NATS_URL                       | NATS instance URL                                        | nats://localhost:4222  |
 | MF_HTTP_FORWARDER_LOG_LEVEL       | Log level for HTTP forwarder (debug, info, warn, error)  | error                  |
 | MF_HTTP_FORWARDER_PORT            | Service HTTP port                                        | 8990                   |
-| MF_HTTP_FORWARDER_URL             | Receiver of messages URL                                 | http://localhost:9000  |
+| MF_HTTP_FORWARDER_REMOTE_URL      | Receiver of messages URL                                 | http://localhost:9000  |
+| MF_HTTP_FORWARDER_REMOTE_TOKEN    | Receiver authorization bearer token                      | ""                     |
 | MF_HTTP_FORWARDER_SUBJECTS_CONFIG | Configuration file path with subjects list               | /config/subjects.toml  |
 | MF_HTTP_FORWARDER_CONTENT_TYPE    | Message payload Content Type                             | application/senml+json |
 
@@ -31,7 +32,8 @@ default values.
       MF_NATS_URL: [NATS instance URL]
       MF_HTTP_FORWARDER_LOG_LEVEL: [HTTP forwarder log level]
       MF_HTTP_FORWARDER_PORT: [Service HTTP port]
-      MF_HTTP_FORWARDER_URL: [Receiver of messages URL]
+      MF_HTTP_FORWARDER_REMOTE_URL: [Receiver of messages URL]
+      MF_HTTP_FORWARDER_REMOTE_TOKEN: [Receiver authorization bearer token]
       MF_HTTP_FORWARDER_SUBJECTS_CONFIG: [Configuration file path with subjects list]
       MF_HTTP_FORWARDER_CONTENT_TYPE: [Message payload Content Type]
     ports:
@@ -55,7 +57,7 @@ make
 make install
 
 # Set the environment variables and run the service
-MF_NATS_URL=[NATS instance URL] MF_HTTP_FORWARDER_LOG_LEVEL=[HTTP forwarder log level] MF_HTTP_FORWARDER_PORT=[Service HTTP port] MF_HTTP_FORWARDER_URL=[Receiver of messages URL] MF_HTTP_FORWARDER_SUBJECTS_CONFIG=[Configuration file path with subjects list] MF_HTTP_FORWARDER_CONTENT_TYPE=[Message payload Content Type]
+MF_NATS_URL=[NATS instance URL] MF_HTTP_FORWARDER_LOG_LEVEL=[HTTP forwarder log level] MF_HTTP_FORWARDER_PORT=[Service HTTP port] MF_HTTP_FORWARDER_REMOTE_URL=[Receiver of messages URL] MF_HTTP_FORWARDER_REMOTE_TOKEN=[Receiver authorization bearer token] MF_HTTP_FORWARDER_SUBJECTS_CONFIG=[Configuration file path with subjects list] MF_HTTP_FORWARDER_CONTENT_TYPE=[Message payload Content Type]
 ```
 
 ### Using docker-compose

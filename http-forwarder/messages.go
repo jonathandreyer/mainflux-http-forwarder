@@ -22,39 +22,51 @@ var errSaveMessage = errors.New("failed to send message to host")
 var _ writers.MessageRepository = (*httpforwarderRepo)(nil)
 
 type httpforwarderRepo struct {
-	url string
+	remoteUrl   string
+	remoteToken string
 }
 
+type Address struct {
+	FullTopic string
+	Published string
+}
 type fields map[string]interface{}
 
 // New returns new HTTP forwarder.
-func New(url string) writers.MessageRepository {
+func New(url string, token string) writers.MessageRepository {
 	return &httpforwarderRepo{
-		url: url,
+		remoteUrl: url,
+		remoteToken: token,
 	}
 }
 
 func (repo *httpforwarderRepo) Save(messages ...senml.Message) error {
-	msgs := make(map[string][]*fields)
+	msgs := make(map[Address][]*fields)
 	for _, msg := range messages {
 		t := repo.fullTopic(&msg)
+		p := msg.Publisher
 		fields := repo.fieldsOf(&msg)
-		msgs[t] = append(msgs[t], &fields)
+		a := Address{FullTopic: t, Published: p}
+		msgs[a] = append(msgs[a], &fields)
 	}
 
-	for topic, msg := range msgs {
+	for address, msg := range msgs {
 		data, err := json.Marshal(msg)
 		if err != nil {
 			return errors.Wrap(errSaveMessage, err)
 		}
 
-		url := fmt.Sprintf("%s/%s", strings.TrimRight(repo.url, "/"), topic)
+		url := fmt.Sprintf("%s/%s", strings.TrimRight(repo.remoteUrl, "/"), address.FullTopic)
 		req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(data))
 		if err != nil {
 			return errors.Wrap(errSaveMessage, err)
 		}
 
 		req.Header.Add("Content-Type", "application/json")
+		req.Header.Add("MF-Publisher", address.Published)
+		if repo.remoteToken != "" {
+			req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", "ojsdfkjhsgf"))
+		}
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {

@@ -7,6 +7,7 @@ by the [configuration file](docker/addons/subjects.toml).
 
 ## Features
 - Forwards NATS messages by HTTP
+- Authorization bearer token in HTTP header (when it is set)
 
 ## License
 

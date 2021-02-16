@@ -22,6 +22,7 @@ var (
 	testLog, _  = log.New(os.Stdout, log.Info.String())
 	streamsSize = 250
 	host     = "http://localhost:9000"
+	token    = ""
 	subtopic = "messages"
 )
 
@@ -34,7 +35,7 @@ var (
 )
 
 func TestForwarder(t *testing.T) {
-	repo := writer.New(host)
+	repo := writer.New(host, token)
 
 	cases := []struct {
 		desc         string
