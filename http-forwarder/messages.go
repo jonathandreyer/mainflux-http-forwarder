@@ -65,7 +65,7 @@ func (repo *httpforwarderRepo) Save(messages ...senml.Message) error {
 		req.Header.Add("Content-Type", "application/json")
 		req.Header.Add("MF-Publisher", address.Published)
 		if repo.remoteToken != "" {
-			req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", "ojsdfkjhsgf"))
+			req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", repo.remoteToken) )
 		}
 		client := &http.Client{}
 		resp, err := client.Do(req)
