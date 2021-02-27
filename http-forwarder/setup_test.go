@@ -16,7 +16,7 @@ import (
 func TestMain(m *testing.M) {
 	router := mux.NewRouter()
 	router.HandleFunc("/channels/{id}/messages", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusAccepted)
 	}).Methods("POST")
 
 	server := httptest.NewUnstartedServer(router)

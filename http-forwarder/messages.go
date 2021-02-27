@@ -74,7 +74,7 @@ func (repo *httpforwarderRepo) Save(messages ...senml.Message) error {
 		}
 		defer resp.Body.Close()
 
-		if resp.StatusCode != http.StatusOK {
+		if resp.StatusCode != http.StatusAccepted {
 			return errors.Wrap(errSaveMessage, errors.New(resp.Status))
 		}
 	}
